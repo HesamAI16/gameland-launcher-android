@@ -19,7 +19,6 @@ LWJGL/*/build/
 # AI agent
 .zcode/
 .agent/
-.claude/
 .cursor/
 .codex/
 .continue/

@@ -32,6 +32,7 @@ import com.movtery.zalithlauncher.bridge.ZLBridge
 import com.movtery.zalithlauncher.game.control.ControlManager
 import com.movtery.zalithlauncher.game.input.EfficientAndroidLWJGLKeycode
 import com.movtery.zalithlauncher.game.input.LWJGLCharSender
+import com.movtery.zalithlauncher.game.launch.GameLandSetup
 import com.movtery.zalithlauncher.game.launch.GameLauncher
 import com.movtery.zalithlauncher.game.launch.LaunchConfig
 import com.movtery.zalithlauncher.game.launch.MCOptions
@@ -95,6 +96,9 @@ class GameHandler(
 
         MCOptions.setup(activity, version)
 
+        GameLandSetup.pinServer(version)
+        val gameLandPack = GameLandSetup.preparePack(version, version.getVersionInfo()!!.minecraftVersion)
+
         MCOptions.apply {
             set("fullscreen", "false")
             set("touchscreen", "false")
@@ -127,6 +131,7 @@ class GameHandler(
             }
 
             loadLanguage(version.getVersionInfo()!!.minecraftVersion)
+            GameLandSetup.applyPackOption(gameLandPack)
             save()
         }
 
