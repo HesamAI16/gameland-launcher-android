@@ -82,7 +82,11 @@ jobs:
       - name: Build APK for ${{ matrix.arch }}
         run: |
           chmod +x gradlew
-          ./gradlew ZalithLauncher:assemble${{ inputs.variant }} -Darch=${{ matrix.arch }}
+          for i in 1 2 3 4; do
+            ./gradlew ZalithLauncher:assemble${{ inputs.variant }} -Darch=${{ matrix.arch }} && exit 0
+            sleep 20
+          done
+          exit 1
 
       - name: Upload Release APK for ${{ matrix.arch }}
         if: inputs.variant == 'Release'
