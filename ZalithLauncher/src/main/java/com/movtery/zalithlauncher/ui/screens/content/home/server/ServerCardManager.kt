@@ -120,6 +120,9 @@ object ServerCardManager {
 
     private const val KEY_RECORDS = "serverCards"
 
+    const val PINNED_SERVER_IP = "play.gamelandmc.com"
+    private const val PINNED_SERVER_NAME = "GameLand"
+
     private val mmkv: MMKV by lazy { MMKV.mmkvWithID("home_server_cards") }
     private val gson = Gson()
     private val scope = CoroutineScope(Dispatchers.IO)
@@ -145,9 +148,16 @@ object ServerCardManager {
     private var visibleIds: Set<String> = emptySet()
 
     init {
-        _cards.value = loadRecords().map { record ->
+        val loaded = loadRecords().map { record ->
             ServerCardState(record, ServerCardPingStatus.Loading)
         }
+        val pinned = loaded.firstOrNull { it.record.cardId == PINNED_SERVER_IP }
+            ?: ServerCardState(
+                ServerCardRecord(cardId = PINNED_SERVER_IP, name = PINNED_SERVER_NAME),
+                ServerCardPingStatus.Loading
+            )
+        _cards.value = listOf(pinned) + loaded.filterNot { it.record.cardId == PINNED_SERVER_IP }
+        saveRecords()
         //首次解析绑定版本
         recheckVersions()
         //版本列表刷新后同步绑定版本的可用性
@@ -187,6 +197,7 @@ object ServerCardManager {
 
     /** 移除指定卡片 */
     fun removeCard(cardId: String) {
+        if (cardId == PINNED_SERVER_IP) return
         synchronized(this) {
             if (_cards.value.none { it.record.cardId == cardId }) return
             pingJobs.remove(cardId)?.cancel()

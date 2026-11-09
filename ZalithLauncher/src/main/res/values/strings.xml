@@ -3072,4 +3072,6 @@
     <string name="guide_joystick_events_events_text1">The triggerable events are the same as those of regular buttons, so you have plenty of freedom here</string>
     <!-- Closing line of the guide card about editing actual key bindings in the Key section -->
     <string name="guide_joystick_events_events_text2">If you only want to control the game, just edit the actual key bindings in the \"Key\" section</string>
+    <string name="gameland_notice_title">GameLand Launcher</string>
+    <string name="gameland_notice_text">Based on Zalith Launcher 2 (GPL-3.0) by MovTery and contributors. This is an unofficial modified version and is not supported by the original authors.</string>
 </resources>
